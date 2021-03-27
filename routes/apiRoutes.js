@@ -2,34 +2,32 @@
 var db = require("../models");
 
 // get the last workout id
-module.exports = function(app) {
+module.exports = function (app) {
     app.get("/api/workouts", (req, res) => {
         db.Workout.find({})
-        .then(workout => {
-            res.json(workout);
-        })
-        .catch(err => {
-            res.json(err);
-        });
+            .then(workout => {
+                res.json(workout);
+            })
+            .catch(err => {
+                res.json(err);
+            });
     });
-    
+
     // Create new workout
-    app.post("/api/workouts", async (req, res)=> {
-        try{
-            const response = await db.Workout.create({type: "workout"})
+    app.post("/api/workouts", async (req, res) => {
+        try {
+            const response = await db.Workout.create({ type: "workout" })
             res.json(response);
         }
-        catch(err){
+        catch (err) {
             console.log("error occurred creating a workout: ", err)
         }
     })
-
-    // Used by api.js to add an exercise to a workout
-    app.put("/api/workouts/:id", ({body, params}, res) => {
+    // update the workout based on the id
+    app.put("/api/workouts/:id", ({ body, params }, res) => {
         const workoutId = params.id;
         let savedExercises = [];
-        // gets all the currently saved exercises in the current workout
-        db.Workout.find({_id: workoutId})
+        db.Workout.find({ _id: workoutId })
             .then(dbWorkout => {
                 savedExercises = dbWorkout[0].exercises;
                 res.json(dbWorkout[0].exercises);
@@ -39,25 +37,23 @@ module.exports = function(app) {
             .catch(err => {
                 res.json(err);
             });
-
-        function updateWorkout(exercises){
-            db.Workout.findByIdAndUpdate(workoutId, {exercises: exercises}, function(err, doc){
-            if(err){
-                console.log(err)
-            }
-
+        //update the workout when user add the excerise
+        function updateWorkout(exercises) {
+            db.Workout.findByIdAndUpdate(workoutId, { exercises: exercises }, function (err, doc) {
+                if (err) {
+                    console.log(err)
+                }
             })
         }
-            
     })
-
+    //get all the workout for all the days
     app.get("/api/workouts/range", (req, res) => {
         db.Workout.find({})
-        .then(workout => {
-            res.json(workout);
-        })
-        .catch(err => {
-            res.json(err);
-        });
-    }); 
+            .then(workout => {
+                res.json(workout);
+            })
+            .catch(err => {
+                res.json(err);
+            });
+    });
 };
