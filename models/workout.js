@@ -5,34 +5,43 @@ const Schema = mongoose.Schema;
 //create the workout schema
 const workoutSchema = new Schema(
   {
+    //day field
     day: {
       type: Date,
       default: Date.now
     },    
+    //excercise array field
     exercises: [
       {
+        //type field
         type: {
           type: String,
           trim: true,
           required: "Enter a exercise type"
         },
+        //name field
         name: {
           type: String,
           trim: true,
           required: "Enter a exercise name"
         },
+        //duation field
         duration: {
           type: Number,
           required: "Enter a exercise duration in minutes"
         },
+        //weight field
         weight: Number,
+        //rep field
         reps: Number,
+        //sets field
         sets: Number,
+        //distance field
         distance: Number
       }
     ]
   },
-  {
+  {//create virtual field to get the total duration time
     toJSON: {
       virtuals: true
     }
