@@ -1,6 +1,5 @@
 //get the workout data from the models
 var db = require("../models/workout.js");
-
 // get the last workout id
 module.exports = function (app) {
     app.get("/api/workouts", (req, res) => {
@@ -12,7 +11,6 @@ module.exports = function (app) {
                 res.json(err);
             });
     });
-
     // Create new workout
     app.post("/api/workouts", async (req, res) => {
         try {
